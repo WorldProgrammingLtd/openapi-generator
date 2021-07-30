@@ -272,15 +272,27 @@ export interface {{classname}}Interface {
      {{#summary}}
      * @summary {{&summary}}
      {{/summary}}
+     {{#useSingleRequestParameter}}
+     {{#allParams.0}}
+     * @param {{=<% %>=}}{<%& classname %><%& operationIdCamelCase %>Request}<%={{ }}=%> requestParameters Request parameters.
+     {{/allParams.0}}
+     {{/useSingleRequestParameter}}
+     {{^useSingleRequestParameter}}
      {{#allParams}}
      * @param {{=<% %>=}}{<%&dataType%>}<%={{ }}=%> {{^required}}[{{/required}}{{paramName}}{{^required}}]{{/required}} {{description}}
      {{/allParams}}
+     {{/useSingleRequestParameter}}
      * @param {*} [options] Override http request option.{{#isDeprecated}}
      * @deprecated{{/isDeprecated}}
      * @throws {RequiredError}
      * @memberof {{classname}}Interface
      */
+    {{#useSingleRequestParameter}}
+    {{nickname}}({{#allParams.0}}requestParameters{{^hasRequiredParams}}?{{/hasRequiredParams}}: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}options?: any): AxiosPromise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}>;
+    {{/useSingleRequestParameter}}
+    {{^useSingleRequestParameter}}
     {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}options?: any): AxiosPromise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}>;
+    {{/useSingleRequestParameter}}
 
 {{/operation}}
 }
